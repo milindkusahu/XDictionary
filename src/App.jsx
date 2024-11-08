@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+const data = [
+  {
+    word: "React",
+    meaning: "A JavaScript library for building user interfaces.",
+  },
+
+  { word: "Component", meaning: "A reusable building block in React." },
+
+  { word: "State", meaning: "An object that stores data for a component." },
+];
+
+const App = () => {
+  const [words, setWords] = useState(data);
+  const [input, setInput] = useState("");
+  const [flag, setFlag] = useState(false);
+
+  const searchHandler = () => {
+    const findWord = data.filter((ele) =>
+      ele.word.toLowerCase().includes(input.toLowerCase())
+    );
+
+    setWords(findWord);
+    setFlag(true);
+  };
 
   return (
-    <>
+    <div>
+      <h1>Dictionary App</h1>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+        />
+        <button onClick={() => searchHandler()}>Search</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <b>
+        <p>Definition:</p>
+      </b>
 
-export default App
+      {flag &&
+        (words.length > 0 ? (
+          words.map((ele, index) => <p key={index}>{ele.meaning}</p>)
+        ) : (
+          <p>Word not found in the dictionary.</p>
+        ))}
+    </div>
+  );
+};
+
+export default App;
