@@ -33,6 +33,7 @@ const App = () => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          placeholder="Search for a word..."
         />
         <button onClick={() => searchHandler()}>Search</button>
       </div>
