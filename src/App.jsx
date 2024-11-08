@@ -17,12 +17,33 @@ const App = () => {
   const [flag, setFlag] = useState(false);
 
   const searchHandler = () => {
+    if (!input.trim()) {
+      setWords([]);
+      setFlag(true);
+      return;
+    }
+
     const findWord = data.filter((ele) =>
       ele.word.toLowerCase().includes(input.toLowerCase())
     );
 
     setWords(findWord);
     setFlag(true);
+  };
+
+  const getContent = () => {
+    if (!flag) return null;
+
+    if (words.length === 0) {
+      return <p>Word not found in the dictionary.</p>;
+    }
+
+    return words.map((ele, index) => <p key={index}>{ele.meaning}</p>);
+  };
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    setFlag(false);
   };
 
   return (
@@ -32,21 +53,16 @@ const App = () => {
         <input
           type="text"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={handleInputChange}
           placeholder="Search for a word..."
         />
         <button onClick={() => searchHandler()}>Search</button>
       </div>
-      <b>
-        <p>Definition:</p>
-      </b>
 
-      {flag &&
-        (words.length > 0 ? (
-          words.map((ele, index) => <p key={index}>{ele.meaning}</p>)
-        ) : (
-          <p>Word not found in the dictionary.</p>
-        ))}
+      <p>
+        <b>Definition:</b>
+      </p>
+      {getContent()}
     </div>
   );
 };
